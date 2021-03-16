@@ -35,16 +35,6 @@ define Package/miniupnpd
   URL:=https://miniupnp.tuxfamily.org/
 endef
 
-define Package/miniupnpd/config
-config MINIUPNPD_IPV6
-	bool "Enable IPV6 Support"
-	default n
-
-config MINIUPNPD_IGDv2
-	bool "Enable IGDv2"
-	default n
-endef
-
 define Package/miniupnpd/conffiles
 /etc/config/upnpd
 endef
@@ -55,8 +45,6 @@ define Build/Prepare
 endef
 
 CONFIGURE_ARGS = \
-	$(if $(CONFIG_MINIUPNPD_IPV6),--ipv6) \
-	$(if $(CONFIG_MINIUPNPD_IGDv2),--igd2) \
 	--leasefile \
 	--portinuse \
 	--firewall=iptables \
