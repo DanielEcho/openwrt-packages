@@ -37,16 +37,12 @@ endef
 
 define Package/miniupnpd/config
 config MINIUPNPD_IPV6
-	bool
+	bool "Enable IPV6 Support"
 	default n
-	prompt "Enable IPV6 Support"
-endef
 
-define Package/miniupnpd/config
 config MINIUPNPD_IGDv2
-	bool
+	bool "Enable IGDv2"
 	default n
-	prompt "Enable IGDv2"
 endef
 
 define Package/miniupnpd/conffiles
