@@ -1,11 +1,3 @@
-#
-# This is free software, lisence use MIT.
-# 
-# Copyright (C) 2020 KFERMercer <KFER.Mercer@gmail.com>
-# 
-# <https://github.com/KFERMercer/OpenWrt-CI>
-#
-
 name: Update Adguardhome
 
 on:
@@ -14,7 +6,7 @@ on:
     - cron: 30 19 * * *
 
 jobs:
-  Update:
+  update:
     runs-on: ubuntu-latest
     steps:
 
