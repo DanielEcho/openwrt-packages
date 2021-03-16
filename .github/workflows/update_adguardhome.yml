@@ -26,4 +26,7 @@ jobs:
         sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=${latest_ver}/g" $GITHUB_WORKSPACE/adguardhome/Makefile
 
     - name: Push Commits
-      run: git push
+      run: |
+        git add $GITHUB_WORKSPACE/adguardhome/Makefile
+        git commit -m "Update Adguardhome ${latest_ver}"
+        git push
