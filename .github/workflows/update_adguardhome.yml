@@ -23,8 +23,10 @@ jobs:
 
     - name: Check up Adguardhome
       run: |
-        echo "LOCAL_VER=$(grep "PKG_VERSION:=" $GITHUB_WORKSPACE/adguardhome/Makefile | grep -oE "[0-9.]+")" >> $GITHUB_ENV
-        echo "CLOUD_VER=$(curl -L -o - ${{ env.URL }} 2>/dev/null|grep -E 'tag_name' |grep -oE "[0-9.]+" 2>/dev/null)" >> $GITHUB_ENV
+        LOCAL_VER=$(grep "PKG_VERSION:=" $GITHUB_WORKSPACE/adguardhome/Makefile | grep -oE "[0-9.]+")
+        CLOUD_VER=$(curl -L -o - ${{ env.URL }} 2>/dev/null|grep -E 'tag_name' |grep -oE "[0-9.]+" 2>/dev/null)
+        echo "LOCAL_VER=${LOCAL_VER}" >> $GITHUB_ENV
+        echo "CLOUD_VER=${CLOUD_VER}" >> $GITHUB_ENV
         echo -e "Adguardhome Local version: v${LOCAL_VER}, cloud version: v${CLOUD_VER}" 
         sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=${CLOUD_VER}/g" $GITHUB_WORKSPACE/adguardhome/Makefile
 
