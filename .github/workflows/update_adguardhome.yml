@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: 30 21 * * *
 
+env:
+  URL: https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -20,13 +23,14 @@ jobs:
 
     - name: Check up Adguardhome
       run: |
-        now_ver="$(cat $GITHUB_WORKSPACE/adguardhome/Makefile | grep "PKG_VERSION:=" | grep -oE "[0-9.]+")"
-        latest_ver="$(curl -L -k --retry 2 --connect-timeout 20 -o - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E '[0-9.]+' -o 2>/dev/null)"
-        echo -e "Adguardhome Local version: ${now_ver}., cloud version: ${latest_ver}." 
-        sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=${latest_ver}/g" $GITHUB_WORKSPACE/adguardhome/Makefile
+        echo "LOCAL_VER=$(grep "PKG_VERSION:=" $GITHUB_WORKSPACE/adguardhome/Makefile | grep -oE "[0-9.]+") >> $GITHUB_ENV
+        echo "CLOUD_VER=$(curl -L -o - ${{ env.URL }} 2>/dev/null|grep -E 'tag_name' |grep -oE "[0-9.]+" 2>/dev/null) >> $GITHUB_ENV
+        echo -e "Adguardhome Local version: ${{ env.LOCAL_VER }}., cloud version: ${{ env.CLOUD_VER }}." 
+        sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=${{ env.CLOUD_VER }}/g" $GITHUB_WORKSPACE/adguardhome/Makefile
 
     - name: Push Commits
+      if: [ -s ${{ env.CLOUD_VER }} ] && ${{ env.CLOUD_VER }} != ${{ env.LOCAL_VER }}
       run: |
         git add $GITHUB_WORKSPACE/adguardhome/Makefile
-        git commit -m "Update Adguardhome ${latest_ver}"
+        git commit -m "Update Adguardhome ${{ env.CLOUD_VER }}"
         git push
