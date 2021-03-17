@@ -29,7 +29,7 @@ jobs:
         sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=${{ env.CLOUD_VER }}/g" $GITHUB_WORKSPACE/adguardhome/Makefile
 
     - name: Push Commits
-      if: [ -s ${{ env.CLOUD_VER }} ] && ${{ env.CLOUD_VER }} != ${{ env.LOCAL_VER }}
+      if: env.CLOUD_VER != env.LOCAL_VER
       run: |
         git add $GITHUB_WORKSPACE/adguardhome/Makefile
         git commit -m "Update Adguardhome ${{ env.CLOUD_VER }}"
