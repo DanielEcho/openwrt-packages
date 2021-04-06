@@ -36,3 +36,10 @@ jobs:
         git add $GITHUB_WORKSPACE/adguardhome/Makefile
         git commit -m "Update Adguardhome ${{ env.CLOUD_VER }}"
         git push
+
+    - name: Delete workflow runs
+      uses: GitRML/delete-workflow-runs@main
+      with:
+        retain_days: 1
+        keep_minimum_runs: 3
+
