@@ -34,12 +34,12 @@ jobs:
       if: env.CLOUD_VER != env.LOCAL_VER
       run: |
         git add $GITHUB_WORKSPACE/adguardhome/Makefile
-        git commit -m "Update Adguardhome ${{ env.CLOUD_VER }}"
+        git commit -m "Adguardhome:bump to v${{ env.CLOUD_VER }}"
         git push
 
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
       with:
         retain_days: 1
-        keep_minimum_runs: 3
+        keep_minimum_runs: 2
 
